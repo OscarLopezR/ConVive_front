@@ -1,0 +1,100 @@
+
+:host {
+  display: block;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 45px;
+  min-height: 67px;
+  padding: 0 max(32px, calc((100% - 1320px) / 2));
+  border-bottom: 1px solid #191f28;
+  background: #080b10;
+}
+
+.brand {
+  flex-shrink: 0;
+  color: #e6f8bc;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  text-decoration: none;
+}
+
+.main-navigation {
+  display: flex;
+  align-items: center;
+}
+
+.nav-explore,
+.nav-login,
+.nav-register {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 37px;
+  padding: 0 25px;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.nav-explore,
+.nav-register {
+  background: #c5f45f;
+  color: #142018;
+}
+
+.nav-explore:hover,
+.nav-register:hover {
+  background: #b6e84c;
+}
+
+.account-navigation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.nav-login {
+  border: 1px solid #c5f45f;
+  color: #c5f45f;
+}
+
+.nav-login:hover {
+  background: #172016;
+}
+
+@media (max-width: 650px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .brand {
+    font-size: 21px;
+  }
+
+  .main-navigation {
+    order: 3;
+    width: 100%;
+  }
+
+  .account-navigation {
+    gap: 7px;
+  }
+
+  .nav-explore,
+  .nav-login,
+  .nav-register {
+    min-height: 34px;
+    padding: 0 13px;
+    font-size: 11px;
+  }
+}

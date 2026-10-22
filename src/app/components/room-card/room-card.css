@@ -1,0 +1,184 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.room-card {
+  overflow: hidden;
+  border: 1px solid #e5e9e3;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #151d2c;
+}
+
+.room-illustration {
+  position: relative;
+  height: 184px;
+  overflow: hidden;
+  background: linear-gradient(
+    to right,
+    #d9dfd0 0%,
+    #d9dfd0 60%,
+    #e6e8dd 60%,
+    #e6e8dd 100%
+  );
+}
+
+.room-illustration::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  background: #c9b69a;
+  content: '';
+}
+
+.room-window {
+  position: absolute;
+  z-index: 1;
+  top: 17px;
+  left: 9%;
+  width: 29%;
+  height: 84px;
+  background: #f5f4e9;
+}
+
+.room-window span:first-child {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 48%;
+  width: 5px;
+  background: #a4b29d;
+}
+
+.room-window span:last-child {
+  position: absolute;
+  top: 47%;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: #a4b29d;
+}
+
+.wall-picture {
+  position: absolute;
+  z-index: 1;
+  top: 30px;
+  right: 9%;
+  width: 30px;
+  height: 37px;
+  background: #53745b;
+}
+
+.room-table {
+  position: absolute;
+  z-index: 2;
+  bottom: 27px;
+  left: 5%;
+  width: 35%;
+  height: 7px;
+  background: #b09b7d;
+}
+
+.room-table span:first-child,
+.room-table span:nth-child(2) {
+  position: absolute;
+  top: 7px;
+  width: 5px;
+  height: 36px;
+  background: #9c876d;
+}
+
+.room-table span:first-child {
+  left: 7%;
+}
+
+.room-table span:nth-child(2) {
+  right: 7%;
+}
+
+.room-bed {
+  position: absolute;
+  z-index: 3;
+  right: 14%;
+  bottom: 49px;
+  width: 43%;
+  height: 49px;
+}
+
+.bed-headboard {
+  height: 12px;
+  background: #8fa487;
+}
+
+.bed-mattress {
+  height: 35px;
+  background: #f8f6ed;
+}
+
+.bed-leg {
+  position: absolute;
+  bottom: -9px;
+  width: 6px;
+  height: 9px;
+  background: #9a866c;
+}
+
+.bed-leg-left {
+  left: 8%;
+}
+
+.bed-leg-right {
+  right: 8%;
+}
+
+.room-information {
+  padding: 16px 17px 18px;
+}
+
+.compatibility {
+  margin: 0 0 9px;
+  color: #285d43;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.room-information h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.room-location,
+.room-features,
+.room-owner {
+  margin: 0 0 8px;
+  color: #81899a;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.room-price {
+  margin: 11px 0 8px;
+  color: #151d2c;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.room-owner {
+  margin-bottom: 0;
+}
+
+@media (max-width: 650px) {
+  .room-illustration {
+    height: 175px;
+  }
+
+  .room-information h3 {
+    font-size: 18px;
+  }
+}

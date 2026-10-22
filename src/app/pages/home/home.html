@@ -1,0 +1,115 @@
+
+<app-navbar></app-navbar>
+
+<main class="home-main">
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <span class="hero-eyebrow">
+        ESPACIOS REALES. CONEXIONES QUE ENCAJAN.
+      </span>
+
+      <h1>
+        Un lugar para vivir.<br>
+        Personas con<br>
+        quienes coincidir.
+      </h1>
+
+      <p class="hero-description">
+        Habitaciones y personas que coinciden contigo.<br>
+        Compara estilos de vida y encuentra tu próximo espacio.
+      </p>
+
+      <div class="hero-actions">
+        <button class="button button-primary" (click)="findRoom()">
+          Encontrar habitación
+        </button>
+
+        <button class="button button-secondary" (click)="becomeLandlord()">
+          Soy arrendador
+        </button>
+      </div>
+
+      <p class="compatibility-tags">
+        Limpieza · Horarios · Mascotas · Visitas
+      </p>
+
+    </div>
+
+    <div class="hero-preview" id="featured-room">
+
+      <h2>Un espacio que se siente como tú</h2>
+
+      <app-room-card></app-room-card>
+
+      <p class="preview-caption">
+        Coinciden en limpieza y horario diurno.
+      </p>
+
+    </div>
+
+  </section>
+
+  <section class="search-bar" aria-label="Buscar habitación">
+
+    <label class="search-field">
+      <span>¿Dónde quieres vivir?</span>
+      <input
+        type="text"
+        [value]="location"
+        (input)="location = $any($event.target).value"
+        placeholder="Ciudad o colonia"
+        aria-label="Ubicación deseada"
+      >
+    </label>
+
+    <label class="search-field">
+      <span>Presupuesto mensual</span>
+      <select
+        [value]="budget"
+        (change)="budget = +$any($event.target).value"
+        aria-label="Presupuesto mensual"
+      >
+        <option [value]="3500">Hasta $3,500 MXN</option>
+        <option [value]="5000">Hasta $5,000 MXN</option>
+        <option [value]="7000">Hasta $7,000 MXN</option>
+        <option [value]="10000">Hasta $10,000 MXN</option>
+      </select>
+    </label>
+
+    <button class="button button-primary search-button" (click)="exploreRooms()">
+      Explorar espacios
+    </button>
+
+  </section>
+
+  <section class="steps-section">
+
+    <h2>Más que una habitación, una buena convivencia.</h2>
+
+    <div class="steps-grid">
+
+      <article class="step-card">
+        <h3>01 · Cuéntanos sobre ti</h3>
+        <p>Completa tu perfil y tus hábitos de convivencia.</p>
+      </article>
+
+      <article class="step-card">
+        <h3>02 · Encuentra tu match</h3>
+        <p>Compara espacios y conoce por qué coinciden.</p>
+      </article>
+
+      <article class="step-card">
+        <h3>03 · Hazlo tu hogar</h3>
+        <p>Envía una solicitud y consulta tu contrato.</p>
+      </article>
+
+    </div>
+
+  </section>
+
+</main>
+
+<app-site-footer></app-site-footer>
