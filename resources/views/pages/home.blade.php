@@ -16,7 +16,7 @@
     </nav>
 
     <div class="user-label">
-        Carlos H. · Inquilino
+        Usuario
     </div>
 </header>
 

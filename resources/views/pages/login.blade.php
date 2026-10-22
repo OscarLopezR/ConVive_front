@@ -10,7 +10,8 @@
 
     <nav class="auth-nav">
         <a href="/" class="auth-nav-link">Volver al inicio</a>
-        <a href="#registro" class="auth-nav-link" data-demo-action="register">
+        <a href="/register" class="auth-nav-link">Crear cuenta</a>
+
             Crear cuenta
         </a>
     </nav>
@@ -86,13 +87,11 @@
                     Olvidé mi contraseña
                 </button>
 
-                <button
-                    type="button"
-                    class="auth-button auth-button-outline"
-                    data-demo-action="register"
-                >
-                    Crear una cuenta
-                </button>
+               
+        <a href="/register" class="auth-button auth-button-outline">
+            Crear una cuenta
+        </a>
+
 
                 <p
                     class="auth-feedback"
