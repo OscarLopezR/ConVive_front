@@ -1,59 +1,96 @@
-# ConviveAngularTemp
+# ConVive · Frontend
+Construido con **Angular 22** (standalone components, SSR/prerender) y **Tailwind CSS v4**.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.3.
+## Requisitos
 
-## Development server
+- [Node.js](https://nodejs.org/) 22 LTS o superior
+- npm 11 (incluido con Node)
 
-To start a local development server, run:
-
-```bash
-npx ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Verifica tus versiones:
 
 ```bash
-ng generate component component-name
+node -v
+npm -v
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Instalación
 
 ```bash
-ng generate --help
+git clone <url-del-repositorio>
+cd ConVive_front
+npm install
 ```
 
-## Building
+Tailwind ya está configurado con `.postcssrc.json` y `src/styles.css`; no requiere pasos extra.
 
-To build the project run:
+## Servidor de desarrollo
 
 ```bash
-ng build
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+(equivale a `ng serve`). Abre `http://localhost:4200/`;
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Compilar para producción
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+Genera el build (navegador + servidor, con prerender de las rutas) en `dist/convive_angular_temp/`.
 
-For end-to-end (e2e) testing, run:
+Para servir el build con SSR:
 
 ```bash
-ng e2e
+npm run serve:ssr:convive_angular_temp
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Pruebas unitarias
 
-## Additional Resources
+```bash
+npm test
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Usa [Vitest](https://vitest.dev/) mediante `ng test`.
+
+## Rutas
+
+| Ruta | Descripción |
+| --- | --- |
+| `/` | Inicio: hero, búsqueda con resultados simulados y pasos |
+| `/register` | Registro en 2 pasos (cuenta y perfil; el paso 2 cambia según el rol) |
+| `/login` | Inicio de sesión |
+| `/recuperar` | Recuperación de contraseña: solicitar enlace y confirmación |
+| `/recuperar/nueva` | Nueva contraseña (destino del enlace del correo) |
+| `/terminos` | Términos y condiciones |
+| `/privacidad` | Aviso de privacidad |
+
+## Estructura del proyecto
+
+```text
+src/
+├── styles.css              # Tailwind, tema, escala global y animaciones
+└── app/
+    ├── components/         # navbar, brand (logo), room-card, site-footer, legal-page
+    ├── pages/              # home, register, login, recover, terms, privacy
+    ├── ui/                 # Primitivas estilo spartan.ng: button, input, label, badge, reveal
+    ├── models/             # Interfaces (Room)
+    └── data/               # Datos simulados (mock-rooms.ts)
+public/                     # Imágenes y logo (principal.png, principal-depto.jpg, img_register.png, logo-nav.png)
+```
+
+## Pendientes (backend)
+
+- Registro, inicio de sesión y recuperación de contraseña (envío de enlace por correo con Gmail).
+- Búsqueda real de espacios: hoy se filtran datos de `src/app/data/mock-rooms.ts`.
+- Las llamadas pendientes están marcadas con comentarios `Pendiente` en los componentes.
+
+## Diseño
+
+Las guías visuales y de arquitectura están en [DESING.md](./DESING.md).
+
+## Solución de problemas
+
+- **`ng` o `npx` no se reconocen:** instala Node.js y reabre la terminal.
+- **Errores de estilos / Tailwind:** confirma que `.postcssrc.json` existe, está en UTF-8 **sin BOM** y que corriste `npm install`.
+- **Imágenes que no cargan:** deben estar en `public/` con el nombre exacto.
