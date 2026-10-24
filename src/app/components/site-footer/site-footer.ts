@@ -1,10 +1,10 @@
-
 import { Component } from '@angular/core';
+import { Reveal } from '../../ui/reveal/reveal';
 
 @Component({
   selector: 'app-site-footer',
   standalone: true,
-  templateUrl: './site-footer.html',
-  styleUrl: './site-footer.css'
+  imports: [Reveal],
+  templateUrl: './site-footer.html'
 })
 export class SiteFooter {}

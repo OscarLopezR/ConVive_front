@@ -1,166 +1,409 @@
+<div class="flex min-h-screen flex-col">
+  <header class="enter mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
+    <app-brand size="h-9"></app-brand>
 
-<div class="register-page">
-
-  <header class="register-header">
-    <a class="brand" routerLink="/" aria-label="Convive, inicio">
-      ConVive
-    </a>
-
-    <a class="explore-link" routerLink="/">
-      Explorar
-    </a>
-
-    <div class="header-tagline">
-      Tu espacio. Tu ritmo. Tu gente.
-    </div>
+    <a routerLink="/" class="text-sm text-slate-400 transition-colors hover:text-white">Explorar</a>
   </header>
 
-  <main class="register-main">
+  <main class="relative flex-1 px-6 py-12 lg:py-16">
+    <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[460px] bg-[radial-gradient(ellipse_55%_50%_at_50%_0%,rgba(204,255,0,0.07),transparent)]"></div>
 
-    <section class="register-card">
+    @if (step === 1) {
+      <!-- PASO 1: cuenta -->
+      <div class="mx-auto grid w-full max-w-6xl grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-20">
+        <!-- Panel de bienvenida -->
+        <aside class="enter relative overflow-hidden rounded-3xl bg-gradient-to-br from-accent/[0.14] via-accent/[0.04] to-transparent p-8 shadow-2xl shadow-black/40 ring-1 ring-accent/20 sm:p-12 lg:sticky lg:top-12">
+          <div class="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-accent/10 blur-3xl"></div>
 
-      <p class="eyebrow">BIENVENIDO A CONVIVE</p>
+          <h2 class="relative text-5xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-6xl">
+            Tu espacio.<br />
+            Tu ritmo.<br />
+            <span class="text-accent">Tu gente.</span>
+          </h2>
 
-      <h1>Crea tu cuenta</h1>
-
-      <p class="intro">
-        Elige cómo quieres formar parte de la comunidad.
-      </p>
-
-      <form #registerForm="ngForm" (ngSubmit)="createAccount()" novalidate>
-
-        <div class="role-selector" aria-label="Tipo de cuenta">
-
-          <button
-            type="button"
-            class="role-button"
-            [class.active]="role === 'tenant'"
-            [attr.aria-pressed]="role === 'tenant'"
-            (click)="selectRole('tenant')">
-            Busco habitación
-          </button>
-
-          <button
-            type="button"
-            class="role-button"
-            [class.active]="role === 'landlord'"
-            [attr.aria-pressed]="role === 'landlord'"
-            (click)="selectRole('landlord')">
-            Ofrezco habitación
-          </button>
-
-        </div>
-
-        <div class="name-fields">
-
-          <label class="form-field">
-            <span>Nombre</span>
-            <input
-              type="text"
-              name="firstName"
-              [(ngModel)]="firstName"
-              placeholder="Tu nombre"
-              autocomplete="given-name"
-              required>
-          </label>
-
-          <label class="form-field">
-            <span>Apellidos</span>
-            <input
-              type="text"
-              name="lastName"
-              [(ngModel)]="lastName"
-              placeholder="Tus apellidos"
-              autocomplete="family-name"
-              required>
-          </label>
-
-        </div>
-
-        <label class="form-field">
-          <span>Correo electrónico</span>
-          <input
-            type="email"
-            name="email"
-            [(ngModel)]="email"
-            placeholder="nombre@correo.com"
-            autocomplete="email"
-            required
-            email>
-        </label>
-
-        <label class="form-field">
-          <span>Teléfono</span>
-          <input
-            type="tel"
-            name="phone"
-            [(ngModel)]="phone"
-            placeholder="55 1234 5678"
-            autocomplete="tel"
-            required>
-        </label>
-
-        <label class="form-field password-field">
-          <span>Contraseña</span>
-
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            name="password"
-            [(ngModel)]="password"
-            placeholder="Mínimo 8 caracteres"
-            autocomplete="new-password"
-            minlength="8"
-            required>
-
-          <button
-            type="button"
-            class="password-toggle"
-            (click)="togglePassword()"
-            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
-            {{ showPassword ? 'Ocultar' : 'Mostrar' }}
-          </button>
-        </label>
-
-        <label class="terms-checkbox">
-          <input
-            type="checkbox"
-            name="acceptTerms"
-            [(ngModel)]="acceptTerms"
-            required>
-
-          <span>
-            Acepto los
-            <a routerLink="/terminos">términos</a>
-            y el
-            <a routerLink="/privacidad">aviso de privacidad</a>.
-          </span>
-        </label>
-
-        @if (message) {
-          <p
-            class="form-message"
-            [class.success-message]="message.startsWith('Formulario validado')"
-            role="status">
-            {{ message }}
+          <p class="relative mt-8 max-w-sm text-slate-300">
+            Todo comienza con conocerte. Elige tu rol y crea una cuenta para encontrar personas compatibles.
           </p>
-        }
 
-        <button
-          type="submit"
-          class="submit-button">
-          Crear cuenta
-        </button>
+          <span hlmBadge variant="outline" class="relative mt-8 bg-background/40 backdrop-blur">
+            <span class="size-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(204,255,0,0.9)]"></span>
+            Estudiantes y profesionales
+          </span>
+        </aside>
 
-        <a class="login-button" routerLink="/login">
-          Ya tengo cuenta · Iniciar sesión
-        </a>
+        <!-- Formulario -->
+        <section class="mx-auto w-full max-w-md lg:mx-0">
+          <p class="enter text-xs font-medium uppercase tracking-wider text-accent [--d:100]">Bienvenido a ConVive</p>
+          <h1 class="enter mt-3 text-4xl font-extrabold tracking-tight text-white [--d:180]">Crea tu cuenta</h1>
+          <p class="enter mt-3 text-slate-400 [--d:260]">Elige cómo quieres formar parte de la comunidad.</p>
 
-      </form>
+          <form #registerForm="ngForm" (ngSubmit)="nextStep()" novalidate class="enter mt-10 space-y-5 [--d:380]">
+            <div class="grid grid-cols-2 gap-1 rounded-full bg-white/5 p-1" role="group" aria-label="Tipo de cuenta">
+              <button
+                type="button"
+                class="h-10 cursor-pointer rounded-full text-sm font-medium transition-all duration-200"
+                [class]="role === 'tenant' ? 'bg-accent font-semibold text-slate-900' : 'text-slate-400 hover:text-white'"
+                [attr.aria-pressed]="role === 'tenant'"
+                (click)="selectRole('tenant')">
+                Busco habitación
+              </button>
 
-    </section>
+              <button
+                type="button"
+                class="h-10 cursor-pointer rounded-full text-sm font-medium transition-all duration-200"
+                [class]="role === 'landlord' ? 'bg-accent font-semibold text-slate-900' : 'text-slate-400 hover:text-white'"
+                [attr.aria-pressed]="role === 'landlord'"
+                (click)="selectRole('landlord')">
+                Ofrezco habitación
+              </button>
+            </div>
 
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <label class="flex flex-col gap-2">
+                <span hlmLabel>Nombre</span>
+                <input hlmInput type="text" name="firstName" [(ngModel)]="firstName" placeholder="Tu nombre" autocomplete="given-name" required />
+              </label>
+
+              <label class="flex flex-col gap-2">
+                <span hlmLabel>Apellidos</span>
+                <input hlmInput type="text" name="lastName" [(ngModel)]="lastName" placeholder="Tus apellidos" autocomplete="family-name" required />
+              </label>
+            </div>
+
+            <label class="flex flex-col gap-2">
+              <span hlmLabel>Correo electrónico</span>
+              <input hlmInput type="email" name="email" [(ngModel)]="email" placeholder="nombre@correo.com" autocomplete="email" required email />
+            </label>
+
+            <label class="flex flex-col gap-2">
+              <span hlmLabel>Teléfono</span>
+              <input hlmInput type="tel" name="phone" [(ngModel)]="phone" placeholder="55 1234 5678" autocomplete="tel" required />
+            </label>
+
+            <label class="relative flex flex-col gap-2">
+              <span hlmLabel>Contraseña</span>
+              <input
+                hlmInput
+                class="pr-24"
+                [type]="showPassword ? 'text' : 'password'"
+                name="password"
+                [(ngModel)]="password"
+                placeholder="Mínimo 8 caracteres"
+                autocomplete="new-password"
+                minlength="8"
+                required />
+              <button
+                type="button"
+                class="absolute bottom-0 right-2 flex h-11 cursor-pointer items-center px-3 text-xs font-medium text-slate-400 transition-colors hover:text-white"
+                (click)="togglePassword()"
+                [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+              </button>
+            </label>
+
+            <label class="flex cursor-pointer items-start gap-3 text-sm text-slate-400">
+              <input type="checkbox" name="acceptTerms" [(ngModel)]="acceptTerms" required class="mt-0.5 size-4 cursor-pointer accent-lime-300" />
+              <span>
+                Acepto los
+                <a routerLink="/terminos" class="text-white underline-offset-4 hover:underline">términos</a>
+                y el
+                <a routerLink="/privacidad" class="text-white underline-offset-4 hover:underline">aviso de privacidad</a>.
+              </span>
+            </label>
+
+            @if (message) {
+              <p class="text-sm text-rose-400" role="status">{{ message }}</p>
+            }
+
+            <button hlmBtn type="submit" size="lg" class="group w-full">
+              Siguiente paso
+              <svg class="size-4 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </button>
+
+            <p class="text-center text-sm text-slate-500">
+              ¿Ya tienes cuenta?
+              <a routerLink="/login" class="text-white underline-offset-4 hover:underline">Iniciar sesión</a>
+            </p>
+          </form>
+        </section>
+      </div>
+    } @else {
+      <!-- PASO 2: estilo de vida y preferencias -->
+      <!-- Imagen de fondo (solo en este paso), difuminada y fundida con el fondo de la página -->
+      <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+        <img
+          src="img_register.png"
+          alt=""
+          class="enter-bg size-full object-cover object-[25%_center] opacity-30 blur-[3px] brightness-75 saturate-75 [mask-image:linear-gradient(to_bottom,black_30%,transparent_95%)]" />
+        <div class="absolute inset-0 bg-background/60"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_75%_30%,rgba(204,255,0,0.08),transparent)]"></div>
+        <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent"></div>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-6xl">
+        <p class="enter text-xs font-medium uppercase tracking-wider text-accent">Perfil · Paso 2 de 2</p>
+        <h1 class="enter mt-3 text-4xl font-extrabold tracking-tight text-white [--d:100] sm:text-5xl">{{ role === 'tenant' ? 'La convivencia empieza contigo' : 'Define quién compartirá tu espacio' }}</h1>
+        <p class="enter mt-3 text-slate-400 [--d:180]">{{ role === 'tenant' ? 'Cuéntanos cómo vives para encontrar coincidencias que tengan sentido.' : 'Cuéntanos cómo es tu hogar y qué tipo de personas encajan contigo.' }}</p>
+
+        <div class="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-20">
+          <form (ngSubmit)="saveProfile()" novalidate class="enter space-y-12 [--d:280]">
+            @if (role === 'tenant') {
+            <!-- Estilo de vida -->
+            <fieldset class="space-y-5">
+              <legend class="mb-5 text-xl font-semibold tracking-tight text-white">Mi estilo de vida</legend>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Ocupación</span>
+                  <select hlmInput name="occupation" [(ngModel)]="occupation">
+                    @for (o of occupations; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Horario de actividad</span>
+                  <select hlmInput name="schedule" [(ngModel)]="schedule">
+                    @for (o of schedules; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+
+              <label class="flex flex-col gap-2">
+                <span hlmLabel>Hábitos de limpieza</span>
+                <select hlmInput name="cleanliness" [(ngModel)]="cleanliness">
+                  @for (o of cleanlinessLevels; track o.id) {
+                    <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                  }
+                </select>
+              </label>
+
+              <label class="flex flex-col gap-2">
+                <span hlmLabel>Frecuencia de visitas</span>
+                <select hlmInput name="visits" [(ngModel)]="visits">
+                  @for (o of visitLevels; track o.id) {
+                    <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                  }
+                </select>
+              </label>
+
+              <label class="flex flex-col gap-2">
+                <span hlmLabel>¿Tienes mascotas?</span>
+                <select hlmInput name="pets" [(ngModel)]="pets">
+                  @for (o of petOptions; track o.id) {
+                    <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                  }
+                </select>
+              </label>
+            </fieldset>
+
+            <!-- Preferencias -->
+            <fieldset class="space-y-5">
+              <legend class="mb-5 text-xl font-semibold tracking-tight text-white">Mis preferencias</legend>
+
+              <label class="flex flex-col gap-2">
+                <span hlmLabel>Convivencia con mascotas</span>
+                <select hlmInput name="petPreference" [(ngModel)]="petPreference">
+                  @for (o of petPreferences; track o.id) {
+                    <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                  }
+                </select>
+              </label>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Rango de edad preferido</span>
+                  <select hlmInput name="ageRange" [(ngModel)]="ageRange">
+                    @for (o of ageRanges; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Género preferido</span>
+                  <select hlmInput name="genderPreference" [(ngModel)]="genderPreference">
+                    @for (o of genderOptions; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+            </fieldset>
+            } @else {
+            <!-- Sobre mí y mi hogar -->
+            <fieldset class="space-y-5">
+              <legend class="mb-5 text-xl font-semibold tracking-tight text-white">Sobre mí y mi hogar</legend>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Ocupación</span>
+                  <select hlmInput name="occupation" [(ngModel)]="occupation">
+                    @for (o of occupations; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Horario de actividad</span>
+                  <select hlmInput name="schedule" [(ngModel)]="schedule">
+                    @for (o of schedules; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Limpieza del hogar</span>
+                  <select hlmInput name="cleanliness" [(ngModel)]="cleanliness">
+                    @for (o of cleanlinessLevels; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>¿Hay mascotas en casa?</span>
+                  <select hlmInput name="pets" [(ngModel)]="pets">
+                    @for (o of hostPetOptions; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- A quién busco -->
+            <fieldset class="space-y-5">
+              <legend class="mb-5 text-xl font-semibold tracking-tight text-white">¿A quién busco en mi espacio?</legend>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Ocupación de quien busco</span>
+                  <select hlmInput name="tenantOccupation" [(ngModel)]="tenantOccupation">
+                    @for (o of tenantOccupations; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Horario preferido</span>
+                  <select hlmInput name="tenantSchedule" [(ngModel)]="tenantSchedule">
+                    @for (o of tenantSchedules; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Hábitos de limpieza esperados</span>
+                  <select hlmInput name="tenantCleanliness" [(ngModel)]="tenantCleanliness">
+                    @for (o of tenantCleanlinessLevels; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Visitas permitidas</span>
+                  <select hlmInput name="visitsAllowed" [(ngModel)]="visitsAllowed">
+                    @for (o of visitsAllowedOptions; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Mascotas de quien llegue</span>
+                  <select hlmInput name="petsAllowed" [(ngModel)]="petsAllowed">
+                    @for (o of petsAllowedOptions; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Fumadores</span>
+                  <select hlmInput name="smoking" [(ngModel)]="smoking">
+                    @for (o of smokingOptions; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Rango de edad preferido</span>
+                  <select hlmInput name="ageRange" [(ngModel)]="ageRange">
+                    @for (o of ageRanges; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-2">
+                  <span hlmLabel>Género preferido</span>
+                  <select hlmInput name="genderPreference" [(ngModel)]="genderPreference">
+                    @for (o of genderOptions; track o.id) {
+                      <option class="bg-slate-900" [value]="o.id">{{ o.label }}</option>
+                    }
+                  </select>
+                </label>
+              </div>
+            </fieldset>
+            }
+
+            @if (message) {
+              <p class="text-sm text-emerald-400" role="status">{{ message }}</p>
+            }
+
+            <div class="flex flex-col-reverse gap-3 sm:flex-row">
+              <button hlmBtn type="button" variant="secondary" size="lg" (click)="previousStep()">Atrás</button>
+              <button hlmBtn type="submit" size="lg" class="flex-1">{{ role === 'tenant' ? 'Guardar y ver mis matches' : 'Guardar y ver candidatos' }}</button>
+            </div>
+          </form>
+
+          <!-- Resumen -->
+          <aside class="enter h-fit [--d:420] lg:sticky lg:top-12">
+            <span hlmBadge variant="match">{{ firstName }} · {{ roleLabel }}</span>
+
+            <h2 class="mt-6 text-3xl font-extrabold leading-tight tracking-tight text-white">
+              {{ role === 'tenant' ? 'Un hogar tranquilo,' : 'Un espacio con' }}<br />
+              <span class="text-accent">{{ role === 'tenant' ? 'a tu ritmo.' : 'buena convivencia.' }}</span>
+            </h2>
+
+            <ul class="mt-6 space-y-3 text-slate-300">
+              @for (item of summaryItems; track $index) {
+                <li class="flex items-center gap-3">
+                  <span class="size-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(204,255,0,0.8)]"></span>
+                  {{ item }}
+                </li>
+              }
+            </ul>
+
+            <p class="mt-8 border-t border-white/5 pt-6 text-sm text-slate-500">
+              {{ role === 'tenant' ? 'Tus hábitos nos ayudan a explicar cada coincidencia. Puedes cambiarlos cuando quieras.' : 'Estas preferencias nos ayudan a sugerirte inquilinos compatibles. Puedes cambiarlas cuando quieras.' }}
+            </p>
+          </aside>
+        </div>
+      </div>
+    }
   </main>
 
   <app-site-footer></app-site-footer>
-
 </div>

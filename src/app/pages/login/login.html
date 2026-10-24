@@ -1,0 +1,66 @@
+<div class="flex min-h-screen flex-col">
+  <header class="enter mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
+    <app-brand size="h-9"></app-brand>
+
+    <div class="flex items-center gap-6">
+      <span class="hidden text-xs font-medium uppercase tracking-wider text-slate-500 md:block">
+        Tu espacio. Tu ritmo. Tu gente.
+      </span>
+      <a routerLink="/" class="text-sm text-slate-400 transition-colors hover:text-white">Explorar</a>
+    </div>
+  </header>
+
+  <main class="relative flex flex-1 items-center justify-center px-6 py-12">
+    <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(204,255,0,0.07),transparent)]"></div>
+
+    <section class="w-full max-w-md">
+      <p class="enter text-xs font-medium uppercase tracking-wider text-accent [--d:100]">Qué bueno verte de nuevo</p>
+      <h1 class="enter mt-3 text-4xl font-extrabold tracking-tight text-white [--d:180]">Inicia sesión</h1>
+      <p class="enter mt-3 text-slate-400 [--d:260]">Accede para seguir buscando tu próximo espacio.</p>
+
+      <form (ngSubmit)="signIn()" novalidate class="enter mt-10 space-y-5 [--d:380]">
+        <label class="flex flex-col gap-2">
+          <span hlmLabel>Correo electrónico</span>
+          <input hlmInput type="email" name="email" [(ngModel)]="email" placeholder="nombre@correo.com" autocomplete="email" required />
+        </label>
+
+        <label class="relative flex flex-col gap-2">
+          <span hlmLabel>Contraseña</span>
+          <input
+            hlmInput
+            class="pr-24"
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Tu contraseña"
+            autocomplete="current-password"
+            required />
+          <button
+            type="button"
+            class="absolute bottom-0 right-2 flex h-11 cursor-pointer items-center px-3 text-xs font-medium text-slate-400 transition-colors hover:text-white"
+            (click)="togglePassword()"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+          </button>
+        </label>
+
+        <div class="flex justify-end">
+          <a routerLink="/recuperar" class="text-sm text-slate-400 transition-colors hover:text-white">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        @if (message) {
+          <p class="text-sm" [class]="success ? 'text-emerald-400' : 'text-rose-400'" role="status">{{ message }}</p>
+        }
+
+        <button hlmBtn type="submit" size="lg" class="w-full">Iniciar sesión</button>
+
+        <p class="text-center text-sm text-slate-500">
+          ¿Aún no tienes cuenta?
+          <a routerLink="/register" class="text-white underline-offset-4 hover:underline">Crear cuenta</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <app-site-footer></app-site-footer>
+</div>

@@ -1,17 +1,16 @@
+<header class="enter sticky top-0 z-40 border-b border-white/5 bg-background/70 backdrop-blur-xl">
+  <div class="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
+    <div class="flex items-center gap-10">
+      <app-brand size="h-9"></app-brand>
 
-<header class="navbar">
+      <nav aria-label="Navegación principal" class="hidden sm:block">
+        <a routerLink="/" class="text-sm font-medium text-white transition-colors hover:text-accent">Explorar</a>
+      </nav>
+    </div>
 
-  <a class="brand" href="/" aria-label="Convive, ir al inicio">
-    ConVive
-  </a>
-
-  <nav class="main-navigation" aria-label="Navegación principal">
-    <a href="/" class="nav-explore">Explorar</a>
-  </nav>
-
-  <div class="account-navigation">
-    <a href="/login" class="nav-login">Iniciar sesión</a>
-    <a href="/register" class="nav-register">Registrarse</a>
+    <div class="flex items-center gap-2">
+      <a hlmBtn variant="ghost" size="sm" routerLink="/login">Iniciar sesión</a>
+      <a hlmBtn size="sm" routerLink="/register">Registrarse</a>
+    </div>
   </div>
-
 </header>

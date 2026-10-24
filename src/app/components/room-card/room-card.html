@@ -1,42 +1,39 @@
-<article class="room-card">
-
-  <div class="room-illustration" role="img" aria-label="Ilustración de una habitación con ventana, cama y mesa">
-    <div class="room-window">
-      <span></span>
-      <span></span>
-    </div>
-
-    <div class="wall-picture"></div>
-
-    <div class="room-table">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <div class="room-bed">
-      <div class="bed-headboard"></div>
-      <div class="bed-mattress"></div>
-      <div class="bed-leg bed-leg-left"></div>
-      <div class="bed-leg bed-leg-right"></div>
-    </div>
-
+<article class="h-full overflow-hidden bg-slate-900 shadow-2xl shadow-black/50 ring-1 ring-white/5 transition-all duration-300"
+  [class]="compact() ? 'rounded-2xl hover:-translate-y-1 hover:ring-accent/30' : 'rounded-3xl'">
+  <div class="group relative w-full overflow-hidden bg-slate-800" [class]="compact() ? 'h-40' : 'h-56'">
+    <img
+      [src]="room().image"
+      [alt]="room().title"
+      loading="lazy"
+      class="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/10 to-transparent"></div>
+    <span hlmBadge variant="match" class="absolute bg-slate-950/60 backdrop-blur" [class]="compact() ? 'left-4 top-4' : 'left-5 top-5'">
+      <span class="size-1.5 rounded-full bg-accent"></span>
+      {{ room().compatibility | number: '1.0-1' }}% compatibles
+    </span>
   </div>
 
-  <div class="room-information">
+  <div [class]="compact() ? 'space-y-3 p-5' : 'space-y-4 p-6'">
+    <div>
+      <h3 class="font-semibold tracking-tight text-white" [class]="compact() ? 'text-base' : 'text-lg'">{{ room().title }}</h3>
+      <p class="mt-1 text-sm text-slate-400">{{ room().neighborhood }} · {{ room().city }}</p>
+    </div>
 
-    <p class="compatibility">92.5% compatibles</p>
+    <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+      {{ room().area | number: '1.0-1' }} m² · {{ room().services }}
+    </p>
 
-    <h3>Habitación cerca de ESCOM</h3>
+    <div class="flex items-end justify-between gap-3 pt-1">
+      <p class="font-bold tracking-tight text-white" [class]="compact() ? 'text-xl' : 'text-2xl'">
+        ${{ room().price | number: '1.0-0' }} <span class="text-sm font-normal text-slate-500">MXN / mes</span>
+      </p>
+      @if (!compact()) {
+        <p class="text-xs text-slate-400">{{ room().owner }}</p>
+      }
+    </div>
 
-    <p class="room-location">Lindavista · Ciudad de México</p>
-
-    <p class="room-features">16.5 m² · Agua, luz, internet y gas</p>
-
-    <p class="room-price">$4,500 MXN / mes</p>
-
-    <p class="room-owner">Ana · Arquitecta · Horario diurno</p>
-
+    @if (compact()) {
+      <p class="text-xs text-slate-400">{{ room().owner }}</p>
+    }
   </div>
-
 </article>
