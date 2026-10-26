@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -24,6 +24,7 @@ type RecoverStep = 'request' | 'sent' | 'reset';
 export class Recover {
   private readonly route = inject(ActivatedRoute);
   private readonly auth = inject(AuthService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   step: RecoverStep = this.route.snapshot.data['step'] ?? 'request';
 
@@ -60,8 +61,14 @@ export class Recover {
     }
 
     this.auth.requestReset(this.email.trim()).subscribe({
-      next: () => (this.step = 'sent'),
-      error: (err) => (this.message = AuthService.errorMessage(err))
+      next: () => {
+        this.step = 'sent';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.message = AuthService.errorMessage(err);
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -94,8 +101,12 @@ export class Recover {
       next: () => {
         this.success = true;
         this.message = 'Contraseña actualizada. Ya puedes iniciar sesión con tu nueva contraseña.';
+        this.cdr.detectChanges();
       },
-      error: (err) => (this.message = AuthService.errorMessage(err))
+      error: (err) => {
+        this.message = AuthService.errorMessage(err);
+        this.cdr.detectChanges();
+      }
     });
   }
 

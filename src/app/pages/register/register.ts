@@ -1,5 +1,5 @@
 import { Brand } from '../../components/brand/brand';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, RegisterPayload } from '../../services/auth.service';
@@ -25,6 +25,7 @@ interface Choice {
 export class Register {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   loading = false;
   showSuccessModal = false;
@@ -32,17 +33,17 @@ export class Register {
 
   closeSuccessModal(): void {
     this.showSuccessModal = false;
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/login');
   }
   /** Paso actual del registro: 1 = cuenta, 2 = estilo de vida y preferencias. */
   step: 1 | 2 = 1;
 
   role: 'tenant' | 'landlord' = 'tenant';
 
-  firstName = 'Carlos';
-  lastName = 'Hernández López';
-  email = 'carlos.h@email.com';
-  phone = '55 1234 5678';
+  firstName = '';
+  lastName = '';
+  email = '';
+  phone = '';
   birthDate = '';
   password = '';
   acceptTerms = false;
@@ -279,15 +280,18 @@ export class Register {
           };
 
     this.loading = true;
+    this.cdr.detectChanges();
     this.auth.register(payload).subscribe({
       next: (res) => {
         this.loading = false;
-        this.createdName = res.user.nombre;
+        this.createdName = res?.user?.nombre || this.firstName.trim();
         this.showSuccessModal = true;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.loading = false;
         this.message = AuthService.errorMessage(err);
+        this.cdr.detectChanges();
       }
     });
   }
