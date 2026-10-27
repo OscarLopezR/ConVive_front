@@ -1,7 +1,8 @@
 import { Brand } from '../../components/brand/brand';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService, RegisterPayload } from '../../services/auth.service';
 import { SiteFooter } from '../../components/site-footer/site-footer';
 import { HlmBadge } from '../../ui/badge/hlm-badge';
 import { HlmButton } from '../../ui/button/hlm-button';
@@ -22,6 +23,17 @@ interface Choice {
   templateUrl: './register.html'
 })
 export class Register {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+
+  loading = false;
+  showSuccessModal = false;
+  createdName = '';
+
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
+    this.router.navigateByUrl('/');
+  }
   /** Paso actual del registro: 1 = cuenta, 2 = estilo de vida y preferencias. */
   step: 1 | 2 = 1;
 
@@ -31,6 +43,7 @@ export class Register {
   lastName = 'Hernández López';
   email = 'carlos.h@email.com';
   phone = '55 1234 5678';
+  birthDate = '';
   password = '';
   acceptTerms = false;
   showPassword = false;
@@ -197,9 +210,15 @@ export class Register {
       !this.lastName.trim() ||
       !this.email.trim() ||
       !this.phone.trim() ||
+      !this.birthDate ||
       !this.password
     ) {
       this.message = 'Completa todos los campos para continuar.';
+      return;
+    }
+
+    if (this.age(this.birthDate) < 18) {
+      this.message = 'Debes ser mayor de 18 años para registrarte.';
       return;
     }
 
@@ -224,8 +243,66 @@ export class Register {
   }
 
   saveProfile(): void {
-    this.message =
-      'Formulario validado. La creación de la cuenta estará disponible al conectar el backend.';
+    this.message = '';
+
+    const common = {
+      role: this.role,
+      nombre: this.firstName.trim(),
+      apellidos: this.lastName.trim(),
+      email: this.email.trim(),
+      telefono: this.phone.replace(/\s+/g, ''),
+      fecha_nacimiento: this.birthDate,
+      password: this.password
+    };
+
+    const payload: RegisterPayload =
+      this.role === 'tenant'
+        ? {
+            ...common,
+            occupation: this.occupation,
+            schedule: this.schedule,
+            cleanliness: this.cleanliness,
+            visits: this.visits,
+            pets: this.pets,
+            pet_preference: this.petPreference,
+            age_range: this.ageRange,
+            gender_preference: this.genderPreference
+          }
+        : {
+            ...common,
+            tenant_occupation: this.tenantOccupation,
+            tenant_schedule: this.tenantSchedule,
+            tenant_cleanliness: this.tenantCleanliness,
+            visits_allowed: this.visitsAllowed,
+            pets_allowed: this.petsAllowed,
+            smoking: this.smoking
+          };
+
+    this.loading = true;
+    this.auth.register(payload).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.createdName = res.user.nombre;
+        this.showSuccessModal = true;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.message = AuthService.errorMessage(err);
+      }
+    });
+  }
+
+  private age(isoDate: string): number {
+    const born = new Date(isoDate);
+    const now = new Date();
+    let years = now.getFullYear() - born.getFullYear();
+    if (
+      now.getMonth() < born.getMonth() ||
+      (now.getMonth() === born.getMonth() && now.getDate() < born.getDate())
+    ) {
+      years--;
+    }
+    return years;
   }
 
   private summaryOf(options: Choice[], id: string): string {

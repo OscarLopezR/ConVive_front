@@ -1,7 +1,8 @@
 import { Brand } from '../../components/brand/brand';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { SiteFooter } from '../../components/site-footer/site-footer';
 import { HlmButton } from '../../ui/button/hlm-button';
 import { HlmInput } from '../../ui/input/hlm-input';
@@ -14,6 +15,9 @@ import { HlmLabel } from '../../ui/label/hlm-label';
   templateUrl: './login.html'
 })
 export class Login {
+  private readonly auth = inject(AuthService);
+
+  loading = false;
   email = '';
   password = '';
   showPassword = false;
@@ -38,7 +42,17 @@ export class Login {
       return;
     }
 
-    this.success = true;
-    this.message = 'Formulario validado. El inicio de sesión estará disponible al conectar el backend.';
+    this.loading = true;
+    this.auth.login(this.email.trim(), this.password).subscribe({
+      next: () => {
+        this.loading = false;
+        this.success = true;
+        this.message = 'Sesión iniciada correctamente.';
+      },
+      error: (err) => {
+        this.loading = false;
+        this.message = AuthService.errorMessage(err);
+      }
+    });
   }
 }
