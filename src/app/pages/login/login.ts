@@ -1,7 +1,7 @@
 import { Brand } from '../../components/brand/brand';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { SiteFooter } from '../../components/site-footer/site-footer';
 import { HlmButton } from '../../ui/button/hlm-button';
@@ -17,6 +17,7 @@ import { HlmLabel } from '../../ui/label/hlm-label';
 export class Login {
   private readonly auth = inject(AuthService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
 
   loading = false;
   email = '';
@@ -46,11 +47,12 @@ export class Login {
     this.loading = true;
     this.cdr.detectChanges();
     this.auth.login(this.email.trim(), this.password).subscribe({
-      next: () => {
+      next: (res) => {
         this.loading = false;
         this.success = true;
         this.message = 'Sesión iniciada correctamente.';
         this.cdr.detectChanges();
+        this.router.navigateByUrl(this.auth.homeFor(res.user));
       },
       error: (err) => {
         this.loading = false;

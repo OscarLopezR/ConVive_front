@@ -31,6 +31,7 @@ export interface RegisterPayload {
 }
 
 const TOKEN_KEY = 'convive_token';
+const USER_KEY = 'convive_user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -40,13 +41,13 @@ export class AuthService {
   login(email: string, password: string): Observable<TokenResponse> {
     return this.http
       .post<TokenResponse>(`${this.api}/login`, { email, password })
-      .pipe(tap((res) => this.saveToken(res.access_token)));
+      .pipe(tap((res) => this.saveSession(res)));
   }
 
   register(payload: RegisterPayload): Observable<TokenResponse> {
     return this.http
       .post<TokenResponse>(`${this.api}/register`, payload)
-      .pipe(tap((res) => this.saveToken(res.access_token)));
+      .pipe(tap((res) => this.saveSession(res)));
   }
 
   requestReset(email: string): Observable<{ message: string }> {
@@ -67,11 +68,39 @@ export class AuthService {
   }
 
   get token(): string | null {
-    return typeof localStorage === 'undefined' ? null : localStorage.getItem(TOKEN_KEY);
+    if (typeof localStorage === 'undefined') return null;
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token && this.isExpired(token)) {
+      this.logout();
+      return null;
+    }
+    return token;
+  }
+
+  /** Usuario guardado en la sesión actual (null si no hay sesión válida). */
+  get user(): AuthUser | null {
+    if (!this.token || typeof localStorage === 'undefined') return null;
+    try {
+      return JSON.parse(localStorage.getItem(USER_KEY) ?? 'null') as AuthUser | null;
+    } catch {
+      return null;
+    }
+  }
+
+  hasRole(role: string): boolean {
+    return this.user?.roles.includes(role) ?? false;
+  }
+
+  /** Ruta inicial según el rol del usuario. */
+  homeFor(user: AuthUser | null): string {
+    if (user?.roles.includes('INQUILINO')) return '/inquilino';
+    return '/';
   }
 
   logout(): void {
-    if (typeof localStorage !== 'undefined') localStorage.removeItem(TOKEN_KEY);
+    if (typeof localStorage === 'undefined') return;
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
   }
 
   /** Extrae un mensaje legible de un error HTTP del backend. */
@@ -85,7 +114,18 @@ export class AuthService {
     return 'Ocurrió un error inesperado. Intenta de nuevo.';
   }
 
-  private saveToken(token: string): void {
-    if (typeof localStorage !== 'undefined') localStorage.setItem(TOKEN_KEY, token);
+  private isExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      return typeof payload.exp === 'number' && payload.exp * 1000 <= Date.now();
+    } catch {
+      return true;
+    }
+  }
+
+  private saveSession(res: TokenResponse): void {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem(TOKEN_KEY, res.access_token);
+    localStorage.setItem(USER_KEY, JSON.stringify(res.user));
   }
 }

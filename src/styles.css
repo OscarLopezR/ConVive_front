@@ -96,6 +96,93 @@
   filter: blur(0);
 }
 
+/* ---------- Temas claro / oscuro ----------
+   Las utilidades de Tailwind leen estas variables de color, así que redefinirlas dentro de un
+   contenedor invierte la paleta (text-white pasa a ser texto oscuro, bg-white/5 un tinte sutil)
+   sin tocar las plantillas. Se aplican con la clase theme-light / theme-dark en un contenedor. */
+.theme-light {
+  color-scheme: light;
+  --color-background: #f6faea;
+  --color-surface: #ffffff;
+  --color-white: #0f172a;
+  --color-slate-50: #0f172a;
+  --color-slate-200: #1e293b;
+  --color-slate-300: #334155;
+  --color-slate-400: #475569;
+  --color-slate-500: #64748b;
+  --color-slate-600: #94a3b8;
+}
+
+.theme-dark {
+  color-scheme: dark;
+  --color-background: #0b0f19;
+  --color-surface: #111827;
+  --color-white: #ffffff;
+  --color-slate-50: #f8fafc;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+}
+
+/* El lima puro no se lee como texto sobre fondo claro: se oscurece solo en ese caso. */
+.theme-light .text-accent { color: #4d7c0f; }
+/* Excepción: textos de marca que conservan el lima del sistema (#ccff00) también en modo claro. */
+.theme-light .text-accent.keep-accent { color: var(--color-accent); }
+.theme-light .text-amber-100 { color: #92400e; }
+.theme-light .text-rose-200 { color: #be123c; }
+.theme-light .text-rose-400 { color: #e11d48; }
+.theme-light .text-emerald-400 { color: #047857; }
+.theme-dark .text-accent { color: var(--color-accent); }
+
+/* Texto de marca: lima en oscuro; en claro, resaltado con fondo lima y texto oscuro */
+.mark-accent {
+  color: var(--color-accent);
+}
+
+.theme-light .mark-accent {
+  color: #0f172a;
+  background: var(--color-accent);
+  padding: 0.02em 0.18em;
+  border-radius: 0.2em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Variante para etiquetas pequeñas (tipo pastilla) */
+.theme-light .mark-label {
+  padding: 0.25em 0.75em;
+  border-radius: 9999px;
+}
+
+/* Partes del logo que cambian de color según el tema */
+.logo-con { fill: #ffffff; }
+.theme-light .logo-con { fill: #0f172a; }
+.theme-dark .logo-con { fill: #ffffff; }
+
+.brand-logo {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+
+.brand-logo img {
+  display: block;
+}
+
+.brand-con {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  filter: url(#con-solid);
+  clip-path: inset(0 35% 0 34%); /* arriba derecha abajo izquierda */
+}
+
+.theme-light .brand-con {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .enter,
   .enter-bg,

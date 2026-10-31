@@ -1,0 +1,58 @@
+<div class="flex min-h-screen flex-col bg-background text-slate-50 transition-colors duration-300" [class]="theme.mode() === 'light' ? 'theme-light' : 'theme-dark'">
+  <header class="sticky top-0 z-30 border-b border-white/5 bg-background/80 backdrop-blur-xl">
+    <div class="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-6">
+      <app-brand size="h-9"></app-brand>
+
+      <nav class="flex min-w-0 items-center gap-2 overflow-x-auto" aria-label="Módulos del inquilino">
+        @for (item of nav; track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive
+            #rla="routerLinkActive"
+            [attr.aria-current]="rla.isActive ? 'page' : null"
+            class="shrink-0 rounded-full px-4 py-2 text-sm transition-all duration-200"
+            [class]="rla.isActive ? pillActive : pillIdle">
+            {{ item.label }}
+          </a>
+        }
+      </nav>
+
+      <div class="flex shrink-0 items-center gap-3">
+        <p class="hidden text-xs text-slate-400 md:block">
+          <span class="font-medium text-white">{{ displayName }}</span>
+          <span class="mx-1.5 text-slate-600">·</span>Inquilino
+        </p>
+        <button
+          type="button"
+          class="flex size-9 cursor-pointer items-center justify-center rounded-full bg-white/5 text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+          (click)="theme.toggle()"
+          [attr.aria-label]="theme.mode() === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'"
+          [attr.title]="theme.mode() === 'light' ? 'Modo oscuro' : 'Modo claro'">
+          @if (theme.mode() === 'light') {
+            <!-- Luna: activa el modo oscuro -->
+            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+          } @else {
+            <!-- Sol: activa el modo claro -->
+            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+          }
+        </button>
+        <button hlmBtn variant="secondary" size="sm" type="button" (click)="logout()">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative flex-1 px-6 py-12 lg:py-14">
+    <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[460px] bg-[radial-gradient(ellipse_55%_50%_at_50%_0%,rgba(204,255,0,0.07),transparent)]"></div>
+
+    <div class="mx-auto w-full max-w-6xl">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <app-site-footer></app-site-footer>
+</div>
