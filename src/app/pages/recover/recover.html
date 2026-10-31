@@ -49,7 +49,28 @@
                     <input hlmInput type="email" [value]="email" readonly aria-readonly="true" />
                   </label>
 
-                  <button hlmBtn type="button" size="lg" class="w-full" (click)="continueToReset()">Continuar a nueva contraseña</button>
+                  @if (message) {
+                    <p class="text-sm text-rose-400" role="status">{{ message }}</p>
+                  }
+
+                  <button hlmBtn type="button" size="lg" class="w-full" [disabled]="resendCooldown > 0" (click)="resendLink()">
+                    {{ resendCooldown > 0 ? 'Reenviar enlace en ' + resendCooldown + ' s' : 'Reenviar enlace' }}
+                  </button>
+                  <a hlmBtn variant="secondary" size="lg" routerLink="/login" class="w-full">Volver a iniciar sesión</a>
+                </div>
+              }
+
+              @case ('checking') {
+                <h2 class="text-xl font-semibold tracking-tight text-white">Verificando tu enlace…</h2>
+                <p class="mt-2 text-sm text-slate-400" role="status">Esto tomará solo un momento.</p>
+              }
+
+              @case ('invalid') {
+                <h2 class="text-xl font-semibold tracking-tight text-white">No pudimos validar tu enlace</h2>
+                <p class="mt-2 text-sm text-slate-400">Solicita uno nuevo e ingresa desde el correo que te enviaremos.</p>
+
+                <div class="mt-8 space-y-5">
+                  <a hlmBtn size="lg" routerLink="/recuperar" class="w-full">Solicitar un nuevo enlace</a>
                   <a hlmBtn variant="secondary" size="lg" routerLink="/login" class="w-full">Volver a iniciar sesión</a>
                 </div>
               }
@@ -92,8 +113,8 @@
                       required />
                   </label>
 
-                  @if (message) {
-                    <p class="text-sm" [class]="success ? 'text-emerald-400' : 'text-rose-400'" role="status">{{ message }}</p>
+                  @if (message && !success) {
+                    <p class="text-sm text-rose-400" role="status">{{ message }}</p>
                   }
 
                   <button hlmBtn type="submit" size="lg" class="w-full">Guardar contraseña</button>
@@ -122,4 +143,47 @@
   </main>
 
   <app-site-footer></app-site-footer>
+
+  @if (showSuccessModal) {
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="success-title">
+      <div class="enter relative w-full max-w-md overflow-hidden rounded-3xl bg-zinc-850/60 p-8 shadow-2xl shadow-black/80 ring-1 ring-white/15 backdrop-blur-xl sm:p-10">
+        <!-- Línea superior neón y halo radial estilo Linear -->
+        <div class="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(ellipse_60%_80%_at_50%_0%,rgba(204,255,0,0.12),transparent)]"></div>
+
+        <!-- Ícono -->
+        <div class="relative flex size-12 items-center justify-center rounded-2xl bg-accent/10 text-accent ring-1 ring-accent/25 shadow-[0_0_28px_-4px_rgba(204,255,0,0.45)]">
+          <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </div>
+
+        <p class="relative mt-6 text-xs font-medium uppercase tracking-wider text-accent">
+          Contraseña actualizada
+        </p>
+
+        <h2 id="success-title" class="relative mt-2 text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">
+          Tu contraseña fue cambiada <span class="text-accent">con éxito.</span>
+        </h2>
+
+        <p class="relative mt-3 mb-7 text-sm leading-relaxed text-slate-400">
+          Ya puedes iniciar sesión con tu nueva contraseña.
+        </p>
+
+        <a
+          routerLink="/login"
+          (click)="showSuccessModal = false"
+          class="group relative inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-accent px-8 text-base font-semibold text-slate-900 transition-all duration-200 hover:bg-lime-300 hover:shadow-[0_0_28px_rgba(204,255,0,0.45)] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60">
+          Ir a iniciar sesión
+          <svg class="size-4 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  }
 </div>

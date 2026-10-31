@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, RegisterPayload } from '../../services/auth.service';
+import { isValidEmail, isValidName, isValidPhone, passwordError } from '../../utils/validators';
 import { SiteFooter } from '../../components/site-footer/site-footer';
 import { HlmBadge } from '../../ui/badge/hlm-badge';
 import { HlmButton } from '../../ui/button/hlm-button';
@@ -218,13 +219,34 @@ export class Register {
       return;
     }
 
+    if (!isValidName(this.firstName) || !isValidName(this.lastName)) {
+      this.message = 'El nombre y los apellidos solo pueden contener letras.';
+      return;
+    }
+
+    if (!isValidEmail(this.email)) {
+      this.message = 'Ingresa un correo electrónico válido.';
+      return;
+    }
+
+    if (!isValidPhone(this.phone)) {
+      this.message = 'El teléfono debe tener 10 dígitos.';
+      return;
+    }
+
+    if (this.age(this.birthDate) < 0) {
+      this.message = 'La fecha de nacimiento no puede ser futura.';
+      return;
+    }
+
     if (this.age(this.birthDate) < 18) {
       this.message = 'Debes ser mayor de 18 años para registrarte.';
       return;
     }
 
-    if (this.password.length < 8) {
-      this.message = 'La contraseña debe tener al menos 8 caracteres.';
+    const passwordMessage = passwordError(this.password);
+    if (passwordMessage) {
+      this.message = passwordMessage;
       return;
     }
 

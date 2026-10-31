@@ -53,6 +53,12 @@ export class AuthService {
     return this.http.post<{ message: string }>(`${this.api}/recuperar`, { email });
   }
 
+  validateReset(token: string): Observable<{ message: string }> {
+    return this.http.get<{ message: string }>(`${this.api}/recuperar/validar`, {
+      params: { token }
+    });
+  }
+
   confirmReset(token: string, password: string): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(`${this.api}/recuperar/confirmar`, {
       token,
